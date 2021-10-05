@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv');
 const app = express();
+const appAlumnes = express();
 
 const myFirstController = require('./controllers/myFirstController');
 // REQUEST, RESPONSE
