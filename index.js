@@ -9,7 +9,9 @@ app.get('/holamundo', myFirstController.helloWorld);
 
 appAlumnes.get('/alumnes', myFirstController.alumnes);
 
-app.use('/api/v1/user', require('./routes/userRoutes'))
+app.use('/api/v1/user', require('./routes/userRoutes'));
+
+app.use('/api/v1/s04-s05', require('./routes/s04-05Routes'));
 
 app.listen(process.env.PORT || 3000, () => {
     console.log("My first API running!");
