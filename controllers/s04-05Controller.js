@@ -1,7 +1,8 @@
 const status = {
     success: 200,
     notFound: 404,
-    badRequest: 400
+    badRequest: 400,
+    divisionMal: 422
 };
 
 module.exports = {
@@ -41,7 +42,7 @@ module.exports = {
         const numero = req.params.numero;
         const message = [];
 
-        if((numero < 2 || numero > 5) || isNaN(numero)) {
+        if ((numero < 2 || numero > 5) || isNaN(numero)) {
             res.status(status.badRequest).send({error: 'Debes introducir un número entre el 2 y el 5!'});
         } else {
             for (let i = 1; i <= 10; i++) {
@@ -50,6 +51,60 @@ module.exports = {
 
             res.status(status.success).send({tabla: message});
         }
+    },
+    factorial: (req, res) => {
+        const numero = req.query.num;
 
+        if (isNaN(numero) || !numero || (numero % 1 !== 0)) {
+            res.status(status.badRequest).send({error: 'Debes introducir un número entero!'});
+        } else {
+            res.status(status.success).send({factorial: calcFactorial(numero)});
+        }
+
+        function calcFactorial(num) {
+            if (num === 0) { 
+                return 1; 
+            } else { 
+                return num * calcFactorial( num - 1 ); 
+            }
+        }
+    },
+    calc: (req, res) => {
+        const operacio = req.body.op;
+        const num1 = req.body.num1;
+        const num2 = req.body.num2;
+        console.log(num1);
+
+        if (!isNaN(num1) && !isNaN(num2)) {
+            switch (operacio) {
+                case 'suma':
+                    res.status(status.success).send({suma: `${num1} + ${num2} = ${sum(num1, num2)}`});
+                    break;
+                case 'resta':
+                    res.status(status.success).send({resta: `${num1} - ${num2} = ${rest(num1, num2)}`});
+                    break;
+                case 'multiplicacio':
+                    res.status(status.success).send({multiplicacio: `${num1} * ${num2} = ${mul(num1, num2)}`});
+                    break;
+                case 'divisio':
+                    if (isNaN(div(num1, num2))) {
+                        res.status(status.divisionMal).send({error: "No se puede dividir entre 0"});
+                    }else {
+                        res.status(status.success).send({divisio: `${num1} - ${num2} = ${div(num1, num2)}`});
+                    }
+                    break;
+            }
+        }
+
+        function sum(num1, num2){return num1 + num2};
+        function rest(num1, num2){return num1 - num2};
+        function mul(num1, num2){return num1 * num2};
+        function div(num1, num2){
+            if (num2 == 0) {
+                return NaN;
+            } else {
+                return num1 / num2;
+            }
+        };
     }
 }
