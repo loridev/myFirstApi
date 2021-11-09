@@ -1,13 +1,8 @@
-const status = {
-    success: 200,
-    notFound: 404,
-    badRequest: 400,
-    divisionMal: 422
-};
+const c = require('./../config/constants');
 
 module.exports = {
     milisegundos: (req, res) => {
-        res.status(status.success).send({dataActualMilisecs: new Date().getTime()});
+        res.status(c.status.success).send({dataActualMilisecs: new Date().getTime()});
     },
     fechaActual: (req, res) => {
         const dataActual = new Date();
@@ -20,7 +15,7 @@ module.exports = {
         if (mm < 10) {
             mm = '0' + mm;
         }
-        res.status(status.success).send({dataActual: `${dd}-${mm}-${yyyy}`});
+        res.status(c.status.success).send({dataActual: `${dd}-${mm}-${yyyy}`});
     },
     horaActual: (req, res) => {
         const dataActual = new Date();
@@ -36,29 +31,29 @@ module.exports = {
         if (seg < 10) {
             seg = '0' + seg;
         }
-        res.status(status.success).send({horaActual: `${hr}:${min}:${seg}`});
+        res.status(c.status.success).send({horaActual: `${hr}:${min}:${seg}`});
     },
     tablaMult: (req, res) => {
         const numero = req.params.numero;
         const message = [];
 
         if ((numero < 2 || numero > 5) || isNaN(numero)) {
-            res.status(status.badRequest).send({error: 'Debes introducir un número entre el 2 y el 5!'});
+            res.status(c.status.badRequest).send({error: 'Debes introducir un número entre el 2 y el 5!'});
         } else {
             for (let i = 1; i <= 10; i++) {
                 message.push(`${numero} x ${i} = ${numero * i}`);
             }
 
-            res.status(status.success).send({tabla: message});
+            res.status(c.status.success).send({tabla: message});
         }
     },
     factorial: (req, res) => {
         const numero = req.query.num;
 
         if (isNaN(numero) || !numero || (numero % 1 !== 0)) {
-            res.status(status.badRequest).send({error: 'Debes introducir un número entero!'});
+            res.status(c.status.badRequest).send({error: 'Debes introducir un número entero!'});
         } else {
-            res.status(status.success).send({factorial: calcFactorial(numero)});
+            res.status(c.status.success).send({factorial: calcFactorial(numero)});
         }
 
         function calcFactorial(num) {
@@ -78,19 +73,19 @@ module.exports = {
         if (!isNaN(num1) && !isNaN(num2)) {
             switch (operacio) {
                 case 'suma':
-                    res.status(status.success).send({suma: `${num1} + ${num2} = ${sum(num1, num2)}`});
+                    res.status(c.status.success).send({suma: `${num1} + ${num2} = ${sum(num1, num2)}`});
                     break;
                 case 'resta':
-                    res.status(status.success).send({resta: `${num1} - ${num2} = ${rest(num1, num2)}`});
+                    res.status(c.status.success).send({resta: `${num1} - ${num2} = ${rest(num1, num2)}`});
                     break;
                 case 'multiplicacio':
-                    res.status(status.success).send({multiplicacio: `${num1} * ${num2} = ${mul(num1, num2)}`});
+                    res.status(c.status.success).send({multiplicacio: `${num1} * ${num2} = ${mul(num1, num2)}`});
                     break;
                 case 'divisio':
                     if (isNaN(div(num1, num2))) {
-                        res.status(status.divisionMal).send({error: "No se puede dividir entre 0"});
+                        res.status(c.status.divisionMal).send({error: "No se puede dividir entre 0"});
                     }else {
-                        res.status(status.success).send({divisio: `${num1} - ${num2} = ${div(num1, num2)}`});
+                        res.status(c.status.success).send({divisio: `${num1} - ${num2} = ${div(num1, num2)}`});
                     }
                     break;
             }

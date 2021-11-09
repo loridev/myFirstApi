@@ -14,6 +14,8 @@ app.use('/api/v1/user', require('./routes/userRoutes'));
 
 app.use('/api/v1/s04-s05', require('./routes/s04-05Routes'));
 
+app.use('/api/v1/s06', require('./routes/s06Routes'));
+
 app.listen(process.env.PORT || 3000, () => {
     console.log("My first API running!");
 });
