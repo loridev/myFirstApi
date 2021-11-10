@@ -2,7 +2,7 @@ const c = require('./../config/constants');
 
 module.exports = {
     randomNum: (req, res) => {
-        res.status(c.status.success).send({Number: Math.random() * (req.params.num - 1) + 1});
+        res.status(c.status.success).send({Number: Math.floor(Math.random() * (req.params.num - 1) + 1)});
     },
 
     multList: (req, res) => {
