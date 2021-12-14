@@ -1,8 +1,9 @@
 module.exports = {
     status: {
         success: 200,
-        notFound: 404,
+        created: 201,
         badRequest: 400,
+        notFound: 404,
         divisionMal: 422
     },
     moviles: [],

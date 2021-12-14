@@ -1,3 +1,4 @@
+const c = require('./../config/constants');
 const users = [{id: 1, name: 'john'}, {id: 2, name: 'david'}, {id: 3, name: 'maria'}];
 const status = {
     success: 200,
@@ -24,5 +25,13 @@ module.exports = {
         console.log(req.params);
 
         res.status(status.success).send(user);
+    },
+    create: (req, res) => {
+        const user = req.body;
+        user.id = users.length + 1;
+
+        users.push(user);
+
+        res.status(c.status.created).send(user);
     }
 };
