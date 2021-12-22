@@ -1,4 +1,5 @@
 const c = require('./../config/constants');
+const userService = require('./../services/userService');
 const users = [{id: 1, name: 'john'}, {id: 2, name: 'david'}, {id: 3, name: 'maria'}];
 const status = {
     success: 200,
@@ -33,5 +34,32 @@ module.exports = {
         users.push(user);
 
         res.status(c.status.created).send(user);
+    },
+    selectById: async (req, res) => {
+        const response = { status: c.status.serverError, msg: 'Internal server error' };
+
+        try {
+            const userId = req.params.id;
+            const serviceResponse = await userService.selectById(userId);
+
+            if (serviceResponse.status) {
+                if (serviceResponse.result) {
+                    response.status = c.status.success;
+                    response.msg = 'User found';
+                    response.body = serviceResponse.result;
+
+                } else {
+                    response.status = c.status.notFound;
+                    response.msg = 'User not found';
+                }
+            }
+
+
+        } catch (err) {
+            console.log('ERROR-userController-selectById: ' + err);
+            response.error = err;
+        }
+
+        res.status(response.status).send(response);
     }
 };

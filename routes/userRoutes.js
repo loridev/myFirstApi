@@ -9,4 +9,6 @@ router.get('/list', userController.list);
 router.get('/profile/:userId?', userController.profile); //INTERROGANTE = OPCIONAL
 router.post('/create', joiMiddleware.validate(userSchemas.createUserSchema, 'body'), userController.create);
 
+router.get('/details/:id', joiMiddleware.validate(userSchemas.selectUserSchema, 'params'), userController.selectById);
+
 module.exports = router;

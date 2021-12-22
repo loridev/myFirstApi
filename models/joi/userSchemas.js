@@ -1,4 +1,5 @@
 const Joi = require('@hapi/joi');
+Joi.objectId = require('joi-objectid')(Joi);
 
 module.exports = {
     createUserSchema: Joi.object({
@@ -9,4 +10,8 @@ module.exports = {
         mail: Joi.string().email().max(30).min(5),
         password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
     }),
+
+    selectUserSchema: Joi.object({
+        id: Joi.objectId().required(),
+    })
 }
