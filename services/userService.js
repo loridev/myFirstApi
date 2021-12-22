@@ -26,5 +26,28 @@ module.exports = {
         }
 
         return response;
+    },
+    selectAll: async (queryParams) => {
+        const response = { status: false };
+
+        try {
+            const data = {
+                findQuery: queryParams,
+                model: userModel,
+                projection: {
+                }
+            }
+
+            const resFromRepo = await repository.selectAll(data);
+
+            if (resFromRepo.status) {
+                response.result = resFromRepo.result;
+                response.status = true;
+            }
+        } catch (err) {
+            console.log('ERROR-userService-selectAll ' + err);
+        }
+
+        return response;
     }
 }

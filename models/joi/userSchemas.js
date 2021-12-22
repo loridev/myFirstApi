@@ -13,5 +13,11 @@ module.exports = {
 
     selectUserSchema: Joi.object({
         id: Joi.objectId().required(),
-    })
+    }),
+
+    selectAllSchema: Joi.object({
+        active: Joi.boolean().optional(),
+        skip: Joi.number().integer().optional(),
+        limit: Joi.number().integer().optional(),
+    }).and('skip', 'limit'),
 }
