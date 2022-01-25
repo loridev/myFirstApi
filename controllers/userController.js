@@ -134,9 +134,14 @@ module.exports = {
             const serviceResponse = await userService.delete(userId);
 
             if (serviceResponse.status) {
-                response.status = c.status.success;
-                response.msg = 'User deleted';
-                response.body = serviceResponse.result;
+                if (serviceResponse.result) {
+                    response.status = c.status.success;
+                    response.msg = 'User deleted';
+                    response.body = serviceResponse.result;
+                } else {
+                    response.status = c.status.notFound;
+                    response.msg = 'User not found';
+                }
             }
 
 

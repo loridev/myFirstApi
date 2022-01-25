@@ -80,9 +80,14 @@ module.exports = {
             const serviceResponse = await movieService.delete(movieId);
 
             if (serviceResponse.status) {
-                response.status = c.status.success;
-                response.msg = 'Film deleted';
-                response.body = serviceResponse.result;
+                if (serviceResponse.result) {
+                    response.status = c.status.success;
+                    response.msg = 'Film deleted';
+                    response.body = serviceResponse.result;
+                } else {
+                    response.status = c.status.notFound;
+                    response.msg = 'Film not found';
+                }
             }
 
 
