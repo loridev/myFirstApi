@@ -49,5 +49,82 @@ module.exports = {
         }
 
         return response;
-    }
+    },
+    create: async (userFromController) => {
+        const response = { status: false };
+
+        try {
+            const user = new userModel(userFromController);
+
+            const resFromRepo = await repository.create(user);
+
+            if (resFromRepo.status) {
+                response.result = resFromRepo.result;
+                response.status = true;
+            }
+        } catch (err) {
+            console.log('ERROR-userService-create ' + err);
+        }
+
+        return response;
+    },
+    update: async (user) => {
+        const response = { status: false };
+
+        try {
+            const data = {
+                _id: mongoose.Types.ObjectId(user.id),
+                model: userModel,
+                projection: {
+                    _id: false,
+                },
+                updateQuery: {},
+            };
+
+            if (user.mail) {
+                data.updateQuery.mail = user.mail;
+            }
+            
+            if (typeof user.active !== 'undefined') {
+                data.updateQuery.active = user.active;
+            }
+
+            const resFromRepo = await repository.update(data);
+
+            if (resFromRepo.status) {
+                response.result = resFromRepo.result;
+                response.status = true;
+            }
+        } catch (err) {
+            console.log('ERROR-userService-update ' + err);
+        }
+
+        return response;
+    },
+    delete: async (userId) => {
+        const response = { status: false };
+
+        try {
+            const data = {
+                _id: mongoose.Types.ObjectId(userId),
+                model: userModel,
+                projection: {
+                    _id: false,
+                },
+                updateQuery: {},
+            };
+
+            const resFromRepo = await repository.delete(data);
+
+            if (resFromRepo.status) {
+                response.result = resFromRepo.result;
+                response.status = true;
+            }
+        } catch (err) {
+            console.log('ERROR-userService-delete ' + err);
+        }
+
+        return response;
+    },
+
 }

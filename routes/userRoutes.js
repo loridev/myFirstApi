@@ -7,10 +7,16 @@ const userSchemas = require('./../models/joi/userSchemas');
 
 router.get('/listArray', userController.list);
 router.get('/profile/:userId?', userController.profile); //INTERROGANTE = OPCIONAL
+
 router.post('/create', joiMiddleware.validate(userSchemas.createUserSchema, 'body'), userController.create);
 
 router.get('/details/:id', joiMiddleware.validate(userSchemas.selectUserSchema, 'params'), userController.selectById);
 
 router.get('/list', joiMiddleware.validate(userSchemas.selectAllSchema, 'query'), userController.selectAll);
+
+router.put('/update/:id', joiMiddleware.validate(userSchemas.updateUserSchema, 'body'),
+    joiMiddleware.validate(userSchemas.selectUserSchema, 'params'), userController.update);
+
+router.delete('/delete/:id', joiMiddleware.validate(userSchemas.selectUserSchema, 'params'), userController.delete);
 
 module.exports = router;

@@ -27,13 +27,27 @@ module.exports = {
 
         res.status(status.success).send(user);
     },
-    create: (req, res) => {
-        const user = req.body;
-        user.id = users.length + 1;
+    create: async (req, res) => {
+        const response = { status: c.status.serverError, msg: 'Internal server error' };
 
-        users.push(user);
+        try {
+            const user = req.body;
+            user.active = true;
+            const serviceResponse = await userService.create(user);
 
-        res.status(c.status.created).send(user);
+            if (serviceResponse.status) {
+                response.status = c.status.created;
+                response.msg = 'User created';
+                response.body = serviceResponse.result;
+            }
+
+
+        } catch (err) {
+            console.log('ERROR-userController-create: ' + err);
+            response.error = err;
+        }
+
+        res.status(response.status).send(response);
     },
     selectById: async (req, res) => {
         const response = { status: c.status.serverError, msg: 'Internal server error' };
@@ -89,5 +103,48 @@ module.exports = {
         }
 
         res.status(response.status).send(response);
-    }
+    },
+    update: async (req, res) => {
+        const response = { status: c.status.serverError, msg: 'Internal server error' };
+
+        try {
+            const user = req.body;
+            user.id = req.params.id
+            const serviceResponse = await userService.update(user);
+
+            if (serviceResponse.status) {
+                response.status = c.status.success;
+                response.msg = 'User updated';
+                response.body = serviceResponse.result;
+            }
+
+
+        } catch (err) {
+            console.log('ERROR-userController-update: ' + err);
+            response.error = err;
+        }
+
+        res.status(response.status).send(response);
+    },
+    delete: async (req, res) => {
+        const response = { status: c.status.serverError, msg: 'Internal server error' };
+
+        try {
+            const userId = req.params.id;
+            const serviceResponse = await userService.delete(userId);
+
+            if (serviceResponse.status) {
+                response.status = c.status.success;
+                response.msg = 'User deleted';
+                response.body = serviceResponse.result;
+            }
+
+
+        } catch (err) {
+            console.log('ERROR-userController-delete: ' + err);
+            response.error = err;
+        }
+
+        res.status(response.status).send(response);
+    },
 };

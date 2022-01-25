@@ -26,5 +26,71 @@ module.exports = {
         }
 
         res.status(response.status).send(response);
-    }
+    },
+    create: async (req, res) => {
+        const response = { status: c.status.serverError, msg: 'Internal server error' };
+
+        try {
+            const movie = req.body;
+            movie.active = true;
+            const serviceResponse = await movieService.create(movie);
+
+            if (serviceResponse.status) {
+                response.status = c.status.created;
+                response.msg = 'Movie created';
+                response.body = serviceResponse.result;
+            }
+
+
+        } catch (err) {
+            console.log('ERROR-movieController-create: ' + err);
+            response.error = err;
+        }
+
+        res.status(response.status).send(response);
+    },
+    update: async (req, res) => {
+        const response = { status: c.status.serverError, msg: 'Internal server error' };
+
+        try {
+            const movie = req.body;
+            movie.id = req.params.id;
+            const serviceResponse = await movieService.update(movie);
+
+            if (serviceResponse.status) {
+                response.status = c.status.success;
+                response.msg = 'Film updated';
+                response.body = serviceResponse.result;
+            }
+
+
+        } catch (err) {
+            console.log('ERROR-movieController-update: ' + err);
+            response.error = err;
+        }
+
+        res.status(response.status).send(response);
+    },
+    delete: async (req, res) => {
+        const response = { status: c.status.serverError, msg: 'Internal server error' };
+
+        try {
+            console.log(req.params.id);
+            const movieId = req.params.id;
+            const serviceResponse = await movieService.delete(movieId);
+
+            if (serviceResponse.status) {
+                response.status = c.status.success;
+                response.msg = 'Film deleted';
+                response.body = serviceResponse.result;
+            }
+
+
+        } catch (err) {
+            console.log('ERROR-movieController-delete: ' + err);
+            response.error = err;
+        }
+
+        res.status(response.status).send(response);
+    },
 }
