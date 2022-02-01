@@ -19,7 +19,7 @@ module.exports = {
         let response = { status: false };
 
         try {
-            const doc = await data.model.find(data.findQuery, data.projection).skip(+data.findQuery.skip).limit(+data.findQuery.limit);
+            const doc = await data.model.find(data.findQuery, data.projection);
 
             response = {
                 status: true,

@@ -28,6 +28,8 @@ app.use('/api/v1/s07', require('./routes/S07Routes'));
 
 app.use('/api/v1/films', require('./routes/movieRoutes'));
 
+app.use('/api/v1/flights', require('./routes/flightRoutes'));
+
 app.listen(process.env.PORT || 3000, () => {
     console.log(`My first API running on port ${process.env.PORT}`);
 });
